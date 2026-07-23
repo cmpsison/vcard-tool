@@ -1415,36 +1415,42 @@ function sendExpiryReminder(requester) {
 
   // 2. Build HTML email body with table
   const firstName = requester.split(' ')[0];
+  const td = `padding:4px 8px;border:1px solid #000;font-size:12px;`;
+  const th = `padding:4px 8px;border:1px solid #000;font-size:12px;font-weight:bold;background:#fff;text-align:left;`;
   const tableRows = expiring.map(v => `
     <tr>
-      <td style="padding:8px 12px;border:1px solid #ddd;">${v.requestedBy}</td>
-      <td style="padding:8px 12px;border:1px solid #ddd;">${v.poNumber}</td>
-      <td style="padding:8px 12px;border:1px solid #ddd;">${resolveSupplier(v.supplierName)}</td>
-      <td style="padding:8px 12px;border:1px solid #ddd;">$${fmt(v.poTotal)}</td>
-      <td style="padding:8px 12px;border:1px solid #ddd;">$${fmt(v.totalCharged)}</td>
-      <td style="padding:8px 12px;border:1px solid #ddd;">$${fmt(v.totalRemaining)}</td>
-      <td style="padding:8px 12px;border:1px solid #ddd;">${v.cardStatus}</td>
-      <td style="padding:8px 12px;border:1px solid #ddd;">${v.validFrom}</td>
+      <td style="${td}">${v.requestedBy}</td>
+      <td style="${td}">${v.poNumber}</td>
+      <td style="${td}">${resolveSupplier(v.supplierName)}</td>
+      <td style="${td}">${fmt(v.poTotal)}</td>
+      <td style="${td}">${fmt(v.totalCharged)}</td>
+      <td style="${td}">${fmt(v.totalRemaining)}</td>
+      <td style="${td}">${v.cardStatus}</td>
+      <td style="${td}">${v.validFrom}</td>
+      <td style="${td}">${v.validTo}</td>
+      <td style="${td}">${daysUntil(v.validTo)}</td>
     </tr>`).join('');
 
-  const htmlBody = `<div style="font-family:Arial,sans-serif;font-size:14px;color:#222;">
+  const htmlBody = `<div style="font-family:Arial,sans-serif;font-size:13px;color:#000;">
   <p>Hi ${firstName}</p>
   <br>
   <p>I hope you're doing well.</p>
   <br>
   <p>I would like to remind you that the following virtual card/s associated with your account will expire soon.</p>
   <br>
-  <table style="border-collapse:collapse;width:100%;font-size:13px;">
+  <table style="border-collapse:collapse;font-size:12px;">
     <thead>
-      <tr style="background:#1e293b;color:#fff;">
-        <th style="padding:8px 12px;border:1px solid #ddd;text-align:left;">Requested By</th>
-        <th style="padding:8px 12px;border:1px solid #ddd;text-align:left;">PO Number</th>
-        <th style="padding:8px 12px;border:1px solid #ddd;text-align:left;">Supplier Name</th>
-        <th style="padding:8px 12px;border:1px solid #ddd;text-align:left;">PO Total</th>
-        <th style="padding:8px 12px;border:1px solid #ddd;text-align:left;">Total Charged</th>
-        <th style="padding:8px 12px;border:1px solid #ddd;text-align:left;">Total Remaining</th>
-        <th style="padding:8px 12px;border:1px solid #ddd;text-align:left;">Card Status</th>
-        <th style="padding:8px 12px;border:1px solid #ddd;text-align:left;">Valid From</th>
+      <tr>
+        <th style="${th}">Requested By</th>
+        <th style="${th}">PO Number</th>
+        <th style="${th}">Supplier Name</th>
+        <th style="${th}">PO Total</th>
+        <th style="${th}">Total Charged</th>
+        <th style="${th}">Total Remaining</th>
+        <th style="${th}">Card Status</th>
+        <th style="${th}">Valid From</th>
+        <th style="${th}">Valid To</th>
+        <th style="${th}">Days Until Expiry</th>
       </tr>
     </thead>
     <tbody>${tableRows}</tbody>
